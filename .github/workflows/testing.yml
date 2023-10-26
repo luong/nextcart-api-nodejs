@@ -1,4 +1,4 @@
-name: Tests
+name: Testing
 
 on:
   workflow_dispatch:
@@ -10,6 +10,7 @@ on:
     branches:
     - main
     - develop
+    
 jobs:
   build:
     environment: testing
