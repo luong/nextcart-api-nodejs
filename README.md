@@ -55,4 +55,4 @@ npm run test
 
 ## Copyright and License
 
-Copyright (c) 2023 LuongFox, and distributed under the MIT License.
+Copyright (c) 2023 Luong, and distributed under the MIT License.
