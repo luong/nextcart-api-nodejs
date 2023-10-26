@@ -1,0 +1,14 @@
+// List products
+GET {{endpoint}}/products?prices=80-90
+Accept: application/json
+###
+
+// Get a product
+GET {{endpoint}}/products/1
+Accept: application/json
+###
+
+// Get all brands
+GET {{endpoint}}/brands
+Accept: application/json
+###

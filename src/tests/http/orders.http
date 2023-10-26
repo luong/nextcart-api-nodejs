@@ -1,0 +1,66 @@
+# @name auth
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{defaultEmail}}",
+  "password": "{{defaultPassword}}"
+}
+###
+
+# Variables
+@idToken = {{auth.response.body.data.AuthenticationResult.IdToken}}
+
+# Add to cart
+POST {{endpoint}}/customers/{{defaultCustomerId}}/cart
+Content-Type: application/json
+Authorization: Bearer {{idToken}}
+
+{
+  "productId": 4,
+  "quantity": 1000
+}
+###
+
+# Get cart items
+GET {{endpoint}}/customers/{{defaultCustomerId}}/cart
+Accept: : application/json
+Authorization: Bearer {{idToken}}
+###
+
+# Update cart items
+PUT {{endpoint}}/customers/{{defaultCustomerId}}/cart/1
+Content-Type: application/json
+Authorization: Bearer {{idToken}}
+
+{
+  "quantity": 1
+}
+###
+
+# Delete a cart item
+DELETE  {{endpoint}}/customers/{{defaultCustomerId}}/cart/2
+Content-Type: application/json
+Authorization: Bearer {{idToken}}
+###
+
+# Place an order
+POST  {{endpoint}}/customers/{{defaultCustomerId}}/orders
+Content-Type: application/json
+Authorization: Bearer {{idToken}}
+
+{
+  "cartItems": [
+    { "productId": 1, "quantity": 1 }
+  ],
+  "addressId": 7,
+  "couponCode": "HAPPY20"
+}
+###
+
+# Get an order
+GET  {{endpoint}}/customers/{{defaultCustomerId}}/orders/ta4y7qnejg7zfxsrj05wq90v
+Content-Type: application/json
+Authorization: Bearer {{idToken}}
+###
+

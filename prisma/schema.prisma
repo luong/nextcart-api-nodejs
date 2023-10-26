@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(200)
+  createdAt DateTime? @db.Timestamp(0)
+  updatedAt DateTime? @db.Timestamp(0)
+  product   Product[]
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String         @db.VarChar(200)
+  description String?        @db.Text
+  price       Float          @default(0) @db.Float
+  quantity    Int            @default(0)
+  brandId     Int?
+  image       String?        @db.VarChar(150)
+  status      ProductStatus?
+  createdAt   DateTime?      @db.Timestamp(0)
+  updatedAt   DateTime?      @db.Timestamp(0)
+  brand       Brand?         @relation(fields: [brandId], references: [id])
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+}
+
+model Customer {
+  id        String     @id @default(uuid()) @db.VarChar(50)
+  email     String     @unique @db.VarChar(45)
+  firstName String?    @db.VarChar(45)
+  lastName  String?    @db.VarChar(45)
+  createdAt DateTime?  @db.Timestamp(0)
+  updatedAt DateTime?  @db.Timestamp(0)
+  addresses Address[]
+  orders    Order[]
+  cartItems CartItem[]
+  payments  Payment[]
+}
+
+model Address {
+  id         Int       @id @default(autoincrement())
+  customerId String
+  firstName  String?   @db.VarChar(45)
+  lastName   String?   @db.VarChar(45)
+  phone      String?   @db.VarChar(45)
+  address1   String?   @db.VarChar(200)
+  address2   String?   @db.VarChar(200)
+  city       String?   @db.VarChar(45)
+  state      String?   @db.VarChar(45)
+  country    String?   @db.VarChar(20)
+  isDefault  Int?      @default(0) @db.TinyInt
+  createdAt  DateTime? @db.Timestamp(0)
+  updatedAt  DateTime? @db.Timestamp(0)
+  customer   Customer  @relation(fields: [customerId], references: [id])
+}
+
+model CartItem {
+  id         Int       @id @default(autoincrement())
+  customerId String
+  productId  Int
+  quantity   Int       @default(0)
+  createdAt  DateTime? @db.Timestamp(0)
+  updatedAt  DateTime? @db.Timestamp(0)
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  product    Product   @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id               String        @id @default(cuid()) @db.VarChar(50)
+  customerId       String
+  originalSubtotal Float         @default(0) @db.Float
+  originalShipping Float         @default(0) @db.Float
+  originalTotal    Float         @default(0) @db.Float
+  subtotal         Float         @default(0) @db.Float
+  coupon           Float         @default(0) @db.Float
+  shipping         Float         @default(0) @db.Float
+  total            Float         @default(0) @db.Float
+  status           OrderStatus?
+  shippingAddress  Json?
+  cancelledAt      DateTime?     @db.Timestamp(0)
+  createdAt        DateTime?     @db.Timestamp(0)
+  updatedAt        DateTime?     @db.Timestamp(0)
+  customer         Customer      @relation(fields: [customerId], references: [id])
+  orderItems       OrderItem[]
+  orderCoupons     OrderCoupon[]
+  payments         Payment[]
+}
+
+model OrderItem {
+  id        Int       @id @default(autoincrement())
+  orderId   String
+  productId Int
+  quantity  Int       @default(0)
+  price     Float     @default(0) @db.Float
+  priceSet  Float     @default(0) @db.Float
+  createdAt DateTime? @db.Timestamp(0)
+  updatedAt DateTime? @db.Timestamp(0)
+  order     Order     @relation(fields: [orderId], references: [id])
+  product   Product   @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id         Int            @id @default(autoincrement())
+  orderId    String
+  customerId String
+  amount     Float?         @default(0) @db.Float
+  method     PaymentMethod
+  status     PaymentStatus?
+  createdAt  DateTime?      @db.Timestamp(0)
+  updatedAt  DateTime?      @db.Timestamp(0)
+  order      Order          @relation(fields: [orderId], references: [id])
+  customer   Customer       @relation(fields: [customerId], references: [id])
+}
+
+model Coupon {
+  id           Int             @id @default(autoincrement())
+  name         String          @unique @db.VarChar(45)
+  value        Float?          @default(0) @db.Float
+  valueType    CouponValueType
+  scope        CouponScope     @default(Subtotal)
+  status       CouponStatus
+  createdAt    DateTime?       @db.Timestamp(0)
+  updatedAt    DateTime?       @db.Timestamp(0)
+  orderCoupons OrderCoupon[]
+}
+
+model OrderCoupon {
+  id        Int       @id @default(autoincrement())
+  orderId   String
+  couponId  Int
+  amount    Float?    @default(0) @db.Float
+  createdAt DateTime? @db.Timestamp(0)
+  updatedAt DateTime? @db.Timestamp(0)
+  order     Order     @relation(fields: [orderId], references: [id])
+  coupon    Coupon    @relation(fields: [couponId], references: [id])
+}
+
+enum ProductStatus {
+  Active
+  Archieved
+}
+
+enum OrderStatus {
+  Pending
+  Completed
+  Cancelled
+}
+
+enum PaymentMethod {
+  Cash
+  Paypal
+  Braintree
+  Stripe
+}
+
+enum PaymentStatus {
+  Pending
+  Success
+  Error
+}
+
+enum CouponValueType {
+  Fixed
+  Percentage
+}
+
+enum CouponScope {
+  Subtotal
+  Shipping
+}
+
+enum CouponStatus {
+  Active
+  Archieved
+}

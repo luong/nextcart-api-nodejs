@@ -1,0 +1,5 @@
+{
+    "testing.automaticallyOpenPeekView": "never",
+    "editor.tabSize": 2,
+    "editor.semanticTokenColorCustomizations": {}
+}

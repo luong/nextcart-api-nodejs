@@ -1,0 +1,89 @@
+# @name auth
+POST {{endpoint}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{defaultEmail}}",
+  "password": "{{defaultPassword}}"
+}
+###
+
+# Variables
+@idToken = {{auth.response.body.data.AuthenticationResult.IdToken}}
+
+# Create a new customer
+POST {{endpoint}}/customers
+Content-Type: application/json
+Authorization: Bearer {{@idToken}}
+
+{
+  "email": "{{auth.request.body.email}}",
+  "firstName": "Luong",
+  "lastName": "Le"
+}
+###
+
+# Get a customer by id
+GET {{endpoint}}/customers/{{defaultCustomerId}}
+Accept: application/json
+Authorization: Bearer {{@idToken}}
+###
+
+# Update a customer
+PUT {{endpoint}}/customers/{{defaultCustomerId}}
+Content-Type: application/json
+Authorization: Bearer {{@idToken}}
+
+{
+  "email": "luongfox@gmail.com",
+  "firstName": "Luong",
+  "lastName": "Le"
+}
+###
+
+# Create a new address
+POST {{endpoint}}/customers/{{defaultCustomerId}}/addresses
+Content-Type: application/json
+Authorization: Bearer {{@idToken}}
+
+{
+  "firstName": "Luong",
+  "lastName": "Le",
+  "phone": "+12888334456",
+  "address1": "56 Sun Avenue",
+  "address2": "108 Sun Avenue",
+  "city": "San Francisco",
+  "state": "CA",
+  "country": "US",
+  "isDefault": 1
+}
+###
+
+# Get addresses of a customer
+GET {{endpoint}}/customers/{{defaultCustomerId}}/addresses
+Accept: application/json
+Authorization: Bearer {{@idToken}}
+###
+
+# Update an existing address
+PUT {{endpoint}}/customers/{{defaultCustomerId}}/addresses/1
+Content-Type: application/json
+Authorization: Bearer {{@idToken}}
+
+{
+  "firstName": "Luong",
+  "lastName": "Fox",
+  "phone": "+12888334456",
+  "address1": "56 Sun Avenue",
+  "address2": "108 Sun Avenue",
+  "city": "San Francisco",
+  "state": "CA",
+  "country": "US",
+  "isDefault": 1
+}
+###
+
+# Delete an address
+DELETE  {{endpoint}}/customers/{{defaultCustomerId}}/addresses/6
+Content-Type: application/json
+Authorization: Bearer {{@idToken}}
