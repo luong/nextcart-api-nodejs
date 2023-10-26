@@ -1,6 +1,6 @@
 # NextCart API - Simple Rest API for Shopping Website
 
-This project is for researching only so that it doesn't cover all aspects of full shopping cart.
+This project is for researching only so that it doesn't cover all aspects for a fullfiled shopping cart.
 
 
 ## Dependences
