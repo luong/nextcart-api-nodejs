@@ -12,7 +12,7 @@ on:
     - develop
 jobs:
   build:
-    environment: dev
+    environment: testing
     env:
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_USER: ${{ secrets.DB_USER }}
