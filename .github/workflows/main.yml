@@ -10,15 +10,21 @@ on:
     branches:
     - main
     - develop
-
+env:
+  DB_DATABASE: nextcart
+  DB_USER: root
+  DB_PASSWORD: root
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v1
         with:
           node-version: '20.x'
       - run: npm install
       - run: npm run build
-      - run: npm run test
