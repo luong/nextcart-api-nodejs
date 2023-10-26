@@ -12,6 +12,7 @@ on:
     - develop
 jobs:
   build:
+    environment: dev
     env:
       DB_NAME: ${{ vars.DB_NAME }}
       DB_USER: ${{ vars.DB_USER }}
