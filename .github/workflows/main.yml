@@ -10,15 +10,15 @@ on:
     branches:
     - main
     - develop
-env:
-  DB_DATABASE: ${{ vars.DB_DATABASE }}
-  DB_USER: ${{ vars.DB_USER }}
-  DB_PASSWORD: ${{ vars.DB_PASSWORD }}
-  DATABASE_URL: mysql://${{ vars.CI_DB_USER }}:${{ vars.CI_DB_PASSWORD }}@127.0.0.1:3306/${{ vars.CI_DB_DATABASE }}
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: dev
+    env:
+      DB_DATABASE: ${{ vars.DB_DATABASE }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+      DATABASE_URL: mysql://${{ vars.DB_USER }}:${{ vars.DB_PASSWORD }}@127.0.0.1:3306/${{ vars.DB_DATABASE }}
     steps:
       - name: Start MySQL
         run: |
