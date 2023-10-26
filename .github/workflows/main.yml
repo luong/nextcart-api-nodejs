@@ -11,14 +11,14 @@ on:
     - main
     - develop
 env:
-  DB_DATABASE: nextcart
-  DB_USER: root
-  DB_PASSWORD: root
+  DB_DATABASE: ${{ vars.DB_DATABASE }}
+  DB_USER: ${{ vars.DB_USER }}
+  DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+  DATABASE_URL: mysql://${{ vars.CI_DB_USER }}:${{ vars.CI_DB_PASSWORD }}@127.0.0.1:3306/${{ vars.CI_DB_DATABASE }}
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: mysql://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@127.0.0.1:3306/${{ env.DB_DATABASE }}
+    environment: dev
     steps:
       - name: Start MySQL
         run: |
