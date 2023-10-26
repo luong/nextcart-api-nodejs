@@ -14,6 +14,7 @@ env:
   DB_DATABASE: nextcart
   DB_USER: root
   DB_PASSWORD: root
+  DATABASE_URL: mysql://root:root@127.0.0.1:3306/nextcart
 jobs:
   build:
     runs-on: ubuntu-latest
