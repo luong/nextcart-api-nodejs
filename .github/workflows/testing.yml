@@ -3,13 +3,9 @@ name: Testing
 on:
   workflow_dispatch:
   push:
-    branches:
-    - main
-    - develop
+    branches: [main]
   pull_request:
-    branches:
-    - main
-    - develop
+    types: [opened, synchronize, ready_for_review, reopened]
     
 jobs:
   build:
