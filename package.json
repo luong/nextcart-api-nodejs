@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon -r tsconfig-paths/register",
     "build": "tsc && tsc-alias -p tsconfig.json",
-    "server": "node build/server.js",
+    "server": "NODE_PATH=./build node build/server.js",
     "test": "vitest run -c vitest.config.ts"
   },
   "prisma": {
