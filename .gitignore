@@ -1,5 +1,6 @@
 node_modules
 build
+storage/logs/*
 
 .idea
 .env
@@ -11,8 +12,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-
-src/storage/logs/*
 
 .env*
 .flaskenv*

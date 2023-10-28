@@ -11,6 +11,7 @@ COPY --from=builder ./app/build ./build
 COPY package*.json .
 COPY deploy.sh .
 COPY prisma ./prisma
+COPY storage ./storage
 RUN npm install --omit=dev
 
-ENTRYPOINT [ "./deploy.sh" ]
+ENTRYPOINT [ "npm", "run", "server" ]
