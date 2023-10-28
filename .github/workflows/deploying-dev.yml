@@ -12,7 +12,7 @@ jobs:
       ECR_REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME }}:latest
       ECS_SERVICE: NextCartService
       ECS_CLUSTER: NextCartCluster
-      ECS_TASK_DEFINITION: task-definition/nextcart-task
+      ECS_TASK_DEFINITION: ./storage/nextcart-task.json
       CONTAINER_NAME: nextcart-api       
       DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}
     runs-on: ubuntu-latest
