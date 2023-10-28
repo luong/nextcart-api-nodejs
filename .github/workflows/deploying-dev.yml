@@ -36,7 +36,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION_FILE }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ envs.DOCKER_IMAGE_NAME }}:develop
+          image: ${{ vars.DOCKER_IMAGE_NAME }}:develop
       - name: Deploy ECS tasks
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
