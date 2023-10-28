@@ -6,27 +6,11 @@ on:
     branches: [develop]
     
 jobs:
-  build:
-    environment: development
-    runs-on: ubuntu-latest
-    steps:
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: docker/build-push-action@v5
-        with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ envs.DOCKER_IMAGE_NAME }}:develop
-
   deploy:
-    needs: [build]
     environment: development
     env:
-      ECR_REPOSITORY: luongfox/nextcart-api-nodejs
-      ECS_SERVICE: 
+      ECR_REPOSITORY: ${{ envs.DOCKER_IMAGE_NAME }}:latest
+      ECS_SERVICE: NextCartService
       ECS_CLUSTER: NextCartCluster
       ECS_TASK_DEFINITION: nextcart-task
       CONTAINER_NAME: nextcart-api       
