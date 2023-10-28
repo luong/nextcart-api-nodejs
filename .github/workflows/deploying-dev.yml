@@ -16,12 +16,40 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: luongfox/nextcart-api-nodejs
       - uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ envs.DOCKER_IMAGE_NAME }}:develop
+
+  deploy:
+    needs: [build]
+    environment: development
+    env:
+      ECR_REPOSITORY: luongfox/nextcart-api-nodejs
+      ECS_SERVICE: 
+      ECS_CLUSTER: NextCartCluster
+      ECS_TASK_DEFINITION: nextcart-task
+      CONTAINER_NAME: nextcart-api       
+      DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '20.x'
+      - run: npm install
+      - run: npm run build
+      - run: npx prisma migrate deploy
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Deploy ECS tasks
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
