@@ -9,6 +9,8 @@ RUN apk add curl
 WORKDIR /app
 COPY --from=builder ./app/build ./build
 COPY package*.json .
+COPY deploy.sh .
 COPY prisma ./prisma
 RUN npm install --omit=dev
-CMD [ "npm", "run", "server" ]
+
+ENTRYPOINT [ "./deploy.sh" ]
