@@ -12,15 +12,7 @@ jobs:
       ECR_REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME }}:latest
       ECS_SERVICE: NextCartService
       ECS_CLUSTER: NextCartCluster
-<<<<<<< HEAD
-<<<<<<< HEAD
-      ECS_TASK_DEFINITION_FILE: ./storage/nextcart-task.json
-=======
       ECS_TASK_DEFINITION: ./storage/nextcart-task.json
->>>>>>> 357c528 (Update deploying-dev.yml)
-=======
-      ECS_TASK_DEFINITION_FILE: ./storage/nextcart-task.json
->>>>>>> 85bc023 (Update deploying-dev.yml)
       CONTAINER_NAME: nextcart-api       
       DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}
     runs-on: ubuntu-latest
@@ -44,19 +36,11 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION_FILE }}
           container-name: ${{ env.CONTAINER_NAME }}
-<<<<<<< HEAD
           image: ${{ vars.DOCKER_IMAGE_NAME }}:develop
       - name: Deploy ECS tasks
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-=======
-          image: ${{ envs.DOCKER_IMAGE_NAME }}:develop
-      - name: Deploy ECS tasks
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION_FILE }}
->>>>>>> 85bc023 (Update deploying-dev.yml)
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
