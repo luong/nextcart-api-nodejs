@@ -16,17 +16,17 @@ model Brand {
 }
 
 model Product {
-  id          Int            @id @default(autoincrement())
-  name        String         @db.VarChar(200)
-  description String?        @db.Text
-  price       Float          @default(0) @db.Float
-  quantity    Int            @default(0)
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(200)
+  description String?       @db.Text
+  price       Float         @default(0) @db.Float
+  quantity    Int           @default(0)
   brandId     Int?
-  image       String?        @db.VarChar(150)
-  status      ProductStatus?
-  createdAt   DateTime?      @db.Timestamp(0)
-  updatedAt   DateTime?      @db.Timestamp(0)
-  brand       Brand?         @relation(fields: [brandId], references: [id])
+  image       String?       @db.VarChar(150)
+  status      ProductStatus
+  createdAt   DateTime?     @db.Timestamp(0)
+  updatedAt   DateTime?     @db.Timestamp(0)
+  brand       Brand?        @relation(fields: [brandId], references: [id])
   cartItems   CartItem[]
   orderItems  OrderItem[]
 }
@@ -47,15 +47,15 @@ model Customer {
 model Address {
   id         Int       @id @default(autoincrement())
   customerId String
-  firstName  String?   @db.VarChar(45)
-  lastName   String?   @db.VarChar(45)
+  firstName  String    @db.VarChar(45)
+  lastName   String    @db.VarChar(45)
   phone      String?   @db.VarChar(45)
-  address1   String?   @db.VarChar(200)
+  address1   String    @db.VarChar(200)
   address2   String?   @db.VarChar(200)
   city       String?   @db.VarChar(45)
-  state      String?   @db.VarChar(45)
-  country    String?   @db.VarChar(20)
-  isDefault  Int?      @default(0) @db.TinyInt
+  state      String    @db.VarChar(45)
+  country    String    @db.VarChar(20)
+  isDefault  Int       @default(0) @db.TinyInt
   createdAt  DateTime? @db.Timestamp(0)
   updatedAt  DateTime? @db.Timestamp(0)
   customer   Customer  @relation(fields: [customerId], references: [id])
@@ -82,7 +82,7 @@ model Order {
   coupon           Float         @default(0) @db.Float
   shipping         Float         @default(0) @db.Float
   total            Float         @default(0) @db.Float
-  status           OrderStatus?
+  status           OrderStatus
   shippingAddress  Json?
   cancelledAt      DateTime?     @db.Timestamp(0)
   createdAt        DateTime?     @db.Timestamp(0)
@@ -110,7 +110,7 @@ model Payment {
   id         Int            @id @default(autoincrement())
   orderId    String
   customerId String
-  amount     Float?         @default(0) @db.Float
+  amount     Float          @default(0) @db.Float
   method     PaymentMethod
   status     PaymentStatus?
   createdAt  DateTime?      @db.Timestamp(0)
