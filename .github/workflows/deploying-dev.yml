@@ -9,7 +9,7 @@ jobs:
   deploy:
     environment: development
     env:
-      ECR_REPOSITORY: ${{ envs.DOCKER_IMAGE_NAME }}:latest
+      ECR_REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME }}:latest
       ECS_SERVICE: NextCartService
       ECS_CLUSTER: NextCartCluster
       ECS_TASK_DEFINITION: nextcart-task
