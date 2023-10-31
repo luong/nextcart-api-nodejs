@@ -4,9 +4,11 @@ import AuthMiddleware from '@/middleware/auth-middleware';
 import CustomerController from '@/controllers/customer-controller';
 import OrderController from '@/controllers/order-controller';
 import AuthController from '@/controllers/auth-controller';
+import ServerController from '@/controllers/server-controller';
 
 const router = express.Router();
 
+router.get('/server/ping', ServerController.ping);
 router.post('/auth/login', AuthController.login);
 
 router.post('/customers', AuthMiddleware.authenticated, CustomerController.createCustomer);
