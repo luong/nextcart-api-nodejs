@@ -6,6 +6,18 @@ import prisma from '@/services/prisma';
 
 export default class ServerController {
 
+  static async index(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.status(HttpCode.OK).json({
+        status: HttpCode.OK,
+        message: HttpMessage.OK,
+        data: 'hello'
+      });
+    } catch (err) {
+      AppError.handleApiError(err, next);
+    }
+  }
+
   static async ping(req: Request, res: Response, next: NextFunction) {
     try {
       await prisma.$queryRaw`SELECT "ok"`;

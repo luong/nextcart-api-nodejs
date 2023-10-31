@@ -8,6 +8,7 @@ import ServerController from '@/controllers/server-controller';
 
 const router = express.Router();
 
+router.get('/', ServerController.index);
 router.get('/server/ping', ServerController.ping);
 router.post('/auth/login', AuthController.login);
 
