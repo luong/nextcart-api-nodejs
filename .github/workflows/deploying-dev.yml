@@ -26,10 +26,10 @@ jobs:
     environment: development
     env:
       ECR_REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME }}:develop
-      ECS_CLUSTER: cluster-nextcart-api-fargate
-      ECS_SERVICE: service-nextcart-api-fargate
+      ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+      ECS_SERVICE: ${{ vars.ECS_SERVICE }}
       ECS_TASK_DEFINITION_FILE: ./.github/task-definition.json
-      CONTAINER_NAME: container-nextcart-api       
+      ECS_CONTAINER_NAME: ${{ vars.ECS_CONTAINER_NAME }}      
       DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}?sslaccept=strict
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION_FILE }}
-          container-name: ${{ env.CONTAINER_NAME }}
+          container-name: ${{ env.ECS_CONTAINER_NAME }}
           image: ${{ vars.DOCKER_IMAGE_NAME }}:develop
       - name: Deploy ECS tasks
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
