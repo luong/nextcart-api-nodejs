@@ -10,5 +10,7 @@ WORKDIR /app
 COPY --from=builder ./app/build ./build
 COPY package*.json .
 COPY prisma ./prisma
+COPY storage ./storage
 RUN npm install --omit=dev
-CMD [ "npm", "run", "server" ]
+
+ENTRYPOINT [ "npm", "run", "server" ]
