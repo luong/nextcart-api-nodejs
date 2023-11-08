@@ -47,7 +47,6 @@ export default class CustomerController {
     try {
       let { id } = req.params;
       let { email, firstName, lastName } = req.body;
-      console.log(res.locals.auth?.sub, id);
       if (res.locals.auth?.sub != id) {
         throw new AppError(HttpCode.ERROR_CLIENT, HttpMessage.UNAUTHORIZED);
       }
